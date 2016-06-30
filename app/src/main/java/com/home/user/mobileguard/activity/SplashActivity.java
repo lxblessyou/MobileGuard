@@ -10,15 +10,16 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,10 +29,8 @@ import com.home.user.mobileguard.bean.ServerJson;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.HttpHandler;
-import com.lidroid.xutils.http.RequestParams;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
-import com.lidroid.xutils.http.client.HttpRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,23 +51,28 @@ public class SplashActivity extends Activity {
     //服务器地址
     private static final String SERVERURL = "http://192.168.1.103:8080/";
     private static final String SERVERJSONPATH = "mobileguard/splash.json";
-    private static final String SERVERAPKPATH = "mobileguard/mobileguard.apk";
-    private static final String TAG = "tag";
 
     //View组件
     private RelativeLayout rl_splash_root;
     private TextView tv_splash_version;
+    private ProgressBar pb_splash_download;
 
-    //常量标记
-    private static final int EXCEPTION = 0X0;
-    private static final int UPDATEDIALOG = 0x1;
-
-    //封装的服务器json对象
-    private ServerJson serverJson;
-
+    //变量标记
+    private int exceptionCode = -1;
     private int versionCode;    //版本号
     private long startTime;
     private long endTime;
+
+    //常量标记
+    private static final String TAG = "tag";
+    private static final int EXCEPTION = 0X0;
+    private static final int UPDATEDIALOG = 0x1;
+    private static final int REQUEST_CODE = 0 ;
+
+    //封装的服务器json对象
+    private ServerJson serverJson;
+    private Thread sleepThread;
+    private Thread checkThread ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +108,7 @@ public class SplashActivity extends Activity {
                     showUpdateDialog();
                     break;
                 case EXCEPTION:
+                    Toast.makeText(SplashActivity.this,String.valueOf(exceptionCode),Toast.LENGTH_SHORT).show();
                     showHomeActivity();
                     break;
             }
@@ -116,7 +121,13 @@ public class SplashActivity extends Activity {
             AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
             builder.setTitle("更新提示")
                     .setMessage(serverJson.getDescription())
-                    .setCancelable(false)
+                    //.setCancelable(false)
+                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            showHomeActivity();
+                        }
+                    })
                     .setNegativeButton("以后再说", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -139,9 +150,24 @@ public class SplashActivity extends Activity {
      */
     private void updateApk() {
         HttpUtils httpUtils = new HttpUtils();
-        HttpHandler httpHandler = httpUtils.download(SERVERURL + SERVERAPKPATH,
+        HttpHandler httpHandler = httpUtils.download(serverJson.getUpdate_url(),
                 Environment.getExternalStorageDirectory() + "/xx.apk",
                 new RequestCallBack<File>() {
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+
+                        pb_splash_download.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onLoading(long total, long current, boolean isUploading) {
+                        super.onLoading(total, current, isUploading);
+
+                        pb_splash_download.setMax((int) total);
+                        pb_splash_download.setProgress((int) current);
+                    }
+
                     @Override
                     public void onSuccess(ResponseInfo<File> responseInfo) {
                         Toast.makeText(SplashActivity.this, "更新完成！", Toast.LENGTH_SHORT).show();
@@ -161,11 +187,12 @@ public class SplashActivity extends Activity {
                         intent.addCategory(Intent.CATEGORY_DEFAULT);
                         intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/xx.apk")),
                                 "application/vnd.android.package-archive");
-                        startActivity(intent);
+                        startActivityForResult(intent, REQUEST_CODE);
                     }
 
                     @Override
                     public void onFailure(HttpException e, String s) {
+                        Log.i(TAG, "onFailure: e--"+e+"--s--"+s);
                         Toast.makeText(SplashActivity.this, "更新失败！", Toast.LENGTH_SHORT).show();
                         showHomeActivity();
                     }
@@ -181,7 +208,7 @@ public class SplashActivity extends Activity {
         endTime = System.currentTimeMillis();
         Log.i(TAG, "endTime:"+endTime+ "---startTimet:"+startTime);
         if (3000 > (endTime - startTime)) {
-            new Thread() {
+            sleepThread = new Thread() {
                 @Override
                 public void run() {
                     try {
@@ -192,7 +219,8 @@ public class SplashActivity extends Activity {
                     startActivity(intent);
                     finish();
                 }
-            }.start();
+            };
+            sleepThread.start();
         } else {
             startActivity(intent);
             finish();
@@ -204,7 +232,7 @@ public class SplashActivity extends Activity {
      */
     private void obtainNewVersion() {
         startTime = System.currentTimeMillis();
-        new Thread() {
+        checkThread =   new Thread() {
             private StringBuilder sb;   //服务器端json字符串
 
             @Override
@@ -213,10 +241,16 @@ public class SplashActivity extends Activity {
                     //获取服务器端json数据
                     getServerJson(sb);
 //                    Log.i("tag", String.valueOf(sb));
+                    if (exceptionCode == 4004){
+                        exceptionHandle(exceptionCode);
+                        return;
+                    }
 
                     //解析json数据
                     serverJson = parsJson(sb);
 //                    Log.i("tag", String.valueOf(serverJson));
+
+                    tv_splash_version.setText("版本名：V"+serverJson.getVersion_name());
 
                     //版本比对，看是否有更新
 //                    Log.i(TAG, "run: 当前版本号-"+versionCode+",服务器版本号-"+serverJson.getVersion_code());
@@ -228,22 +262,26 @@ public class SplashActivity extends Activity {
                         showHomeActivity();
                     }
 
-                } catch (MalformedURLException e) {
+                } catch (MalformedURLException e) { //url异常
                     e.printStackTrace();
-                    exceptionHandle();
-                } catch (IOException e) {
+                    exceptionCode = 4001;
+                    exceptionHandle(exceptionCode);
+                } catch (IOException e) {   //网络异常
                     e.printStackTrace();
-                    exceptionHandle();
-                } catch (JSONException e) {
+                    exceptionCode = 4002;
+                    exceptionHandle(exceptionCode);
+                } catch (JSONException e) { //解析异常
                     e.printStackTrace();
-                    exceptionHandle();
+                    exceptionCode = 4003;
+                    exceptionHandle(exceptionCode);
                 }
             }
 
             /**
              * 异常处理
+             * @param exceptionCode
              */
-            private void exceptionHandle() {
+            private void exceptionHandle(int exceptionCode) {
                 handler.sendEmptyMessage(EXCEPTION);
             }
 
@@ -269,6 +307,7 @@ public class SplashActivity extends Activity {
              * @throws IOException
              */
             private void getServerJson(StringBuilder sb) throws IOException {
+                BufferedReader br = null;
                 URL url = new URL(SERVERURL + SERVERJSONPATH);
                 HttpURLConnection httpUrlConnection = (HttpURLConnection) url.openConnection();
                 httpUrlConnection.setRequestMethod("GET");  //请求方法
@@ -276,20 +315,28 @@ public class SplashActivity extends Activity {
                 httpUrlConnection.setReadTimeout(5000); //读取超时时长
 
                 int responseCode = httpUrlConnection.getResponseCode(); //服务器返回的响应码
-                if (responseCode % 2 == 0) { //连接成功
+                if(responseCode == 404){    //资源没找到
+                    exceptionCode = 4004;
+                }
+                else if (responseCode % 2 == 0) { //连接成功
                     InputStream inputStream = httpUrlConnection.getInputStream();
-                    BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+                    br =  new BufferedReader(new InputStreamReader(inputStream));
                     String line = br.readLine();
                     this.sb = new StringBuilder();
                     while (!TextUtils.isEmpty(line)) {
                         this.sb.append(line);
                         line = br.readLine();
                     }
-                    inputStream.close();
                 }
-                httpUrlConnection.disconnect();
+                if (br!=null){
+                    br.close();
+                }
+                if (httpUrlConnection!=null){
+                    httpUrlConnection.disconnect();
+                }
             }
-        }.start();
+        };
+        checkThread.start();
     }
 
     /**
@@ -298,6 +345,7 @@ public class SplashActivity extends Activity {
     private void initView() {
         rl_splash_root = (RelativeLayout) findViewById(R.id.rl_splash_root);
         tv_splash_version = (TextView) findViewById(R.id.tv_splash_version);
+        pb_splash_download = (ProgressBar) findViewById(R.id.pb_splash_download);
     }
 
     /**
@@ -339,12 +387,19 @@ public class SplashActivity extends Activity {
         rl_splash_root.startAnimation(as);
     }
 
-    /*
-点击取消后不知为什么没调用
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(TAG, "onActivityResult: ");
         showHomeActivity();
-    }*/
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (sleepThread!=null){
+            sleepThread.interrupt();
+        }if (checkThread!=null){
+            checkThread.interrupt();
+        }
+    }
 }
