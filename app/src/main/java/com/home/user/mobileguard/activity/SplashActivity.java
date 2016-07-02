@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +28,6 @@ import com.home.user.mobileguard.R;
 import com.home.user.mobileguard.bean.ServerJson;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
-import com.lidroid.xutils.http.HttpHandler;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 
@@ -150,7 +149,7 @@ public class SplashActivity extends Activity {
      */
     private void updateApk() {
         HttpUtils httpUtils = new HttpUtils();
-        HttpHandler httpHandler = httpUtils.download(serverJson.getUpdate_url(),
+        httpUtils.download(serverJson.getUpdate_url(),
                 Environment.getExternalStorageDirectory() + "/xx.apk",
                 new RequestCallBack<File>() {
                     @Override
@@ -203,6 +202,9 @@ public class SplashActivity extends Activity {
      * 跳转到首页
      */
     private void showHomeActivity() {
+        if (this.isFinishing()){
+            return;
+        }
         final Intent intent = new Intent(this, HomeActivity.class);
 
         endTime = System.currentTimeMillis();
