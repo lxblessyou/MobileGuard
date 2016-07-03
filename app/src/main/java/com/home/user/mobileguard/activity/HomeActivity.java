@@ -201,11 +201,17 @@ public class HomeActivity extends Activity implements View.OnClickListener {
                     e.printStackTrace();
                 }
                 ad_set_pw.cancel();
+                showSetupActivity();
             } else {
                 Toast.makeText(this, "两次密码不同", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(this, "密码不能为空！", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void showSetupActivity() {
+        Intent intent = new Intent(this,LostFindSetup1Activity.class);
+        startActivity(intent);
     }
 }
