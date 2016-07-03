@@ -1,6 +1,7 @@
 package com.home.user.mobileguard.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -131,50 +132,80 @@ public class HomeActivity extends Activity implements View.OnClickListener {
                 ad_set_pw.cancel();
                 break;
             case R.id.btn_setting_confirm:
-                password = et_dialog_pdsetting.getText().toString().trim();
-                String passwordConfirm = et_dialog_pdsetting_confirm.getText().toString().trim();
-                if (!TextUtils.isEmpty(password) && !TextUtils.isEmpty(passwordConfirm)) {
-                    if (password.equals(passwordConfirm)) {
-                        try {
-                            //对密码进行MD5加密,xutils工具里有,这里自己写个作为练习
-                            spMD5Pw = MD5Util.md5Digest(password);
-                            //保存md5密码
-                            SPTools.putValue(this, MyContants.PDKEY, spMD5Pw);
-                        } catch (NoSuchAlgorithmException e) {
-                            e.printStackTrace();
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
-                        ad_set_pw.cancel();
-                    } else {
-                        Toast.makeText(this, "两次密码不同", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(this, "密码不能为空！", Toast.LENGTH_SHORT).show();
-                }
+                setPasswordConfirm();
                 break;
             case R.id.btn_input_confirm:
-                password = et_dialog_input_confirm.getText().toString().trim();
-                if (password != null) {
-                    try {
-                        spMD5Pw = SPTools.getValue(this, MyContants.PDKEY, null);
-                        if (spMD5Pw != null && spMD5Pw.equals(MD5Util.md5Digest(password))) {
-                            Toast.makeText(this, "登陆成功", Toast.LENGTH_LONG).show();
-                            ad_input_pw.dismiss();
-                        } else {
-                            Toast.makeText(this,"密码错误,请重输!!!",Toast.LENGTH_LONG).show();
-                            et_dialog_input_confirm.setText("");
-                        }
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                }
+                inputPasswordConfirm();
                 break;
             case R.id.btn_input_cancel:
                 ad_input_pw.cancel();
                 break;
+        }
+    }
+
+    /**
+     * 手机防盗确认密码
+     */
+    private void inputPasswordConfirm() {
+        String password = et_dialog_input_confirm.getText().toString().trim();
+        if (password != null) {
+            try {
+                spMD5Pw = SPTools.getValue(this, MyContants.PDKEY, null);
+                if (spMD5Pw != null && spMD5Pw.equals(MD5Util.md5Digest(password))) {
+                    Toast.makeText(this, "登陆成功", Toast.LENGTH_LONG).show();
+                    ad_input_pw.dismiss();
+                    //判断是直接进入LostFindActivity还是先进入引导步骤
+                    intoLostFind();
+                } else {
+                    Toast.makeText(this,"密码错误,请重输!!!",Toast.LENGTH_LONG).show();
+                    et_dialog_input_confirm.setText("");
+                }
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 判断是直接进入LostFindActivity还是先进入引导步骤
+     */
+    private void intoLostFind() {
+        String isSetup = SPTools.getValue(this, MyContants.ISSETUPKEY, null);
+        Intent intent = new Intent();
+        if (isSetup!=null) {
+            intent.setClass(this, LostFindActivity.class);
+        } else {
+            intent.setClass(this, LostFindSetup1Activity.class);
+        }
+        startActivity(intent);
+    }
+
+    /**
+     * 密码设置确认密码
+     */
+    private void setPasswordConfirm() {
+        String password = et_dialog_pdsetting.getText().toString().trim();
+        String passwordConfirm = et_dialog_pdsetting_confirm.getText().toString().trim();
+        if (!TextUtils.isEmpty(password) && !TextUtils.isEmpty(passwordConfirm)) {
+            if (password.equals(passwordConfirm)) {
+                try {
+                    //对密码进行MD5加密,xutils工具里有,这里自己写个作为练习
+                    spMD5Pw = MD5Util.md5Digest(password);
+                    //保存md5密码
+                    SPTools.putValue(this, MyContants.PDKEY, spMD5Pw);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                ad_set_pw.cancel();
+            } else {
+                Toast.makeText(this, "两次密码不同", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "密码不能为空！", Toast.LENGTH_SHORT).show();
         }
     }
 }

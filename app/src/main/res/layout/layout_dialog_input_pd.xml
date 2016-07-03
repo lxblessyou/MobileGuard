@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <TextView
-        style="@style/pd_setting"
+        style="@style/style_tile"
         android:text="手机防盗密码"/>
     <EditText
         android:id="@+id/et_dialog_input_confirm"
@@ -21,12 +21,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/btn_selector"
             android:text="取消"/>
         <Button
             android:id="@+id/btn_input_confirm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/btn_selector"
             android:text="确定"/>
 
     </LinearLayout>

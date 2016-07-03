@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <TextView
-        style="@style/pd_setting"
+        style="@style/style_tile"
         android:text="设置密码"/>
     <EditText
         android:id="@+id/et_dialog_pdsetting"
@@ -27,12 +27,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/btn_selector"
             android:text="取消设置"/>
         <Button
             android:id="@+id/btn_setting_confirm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/btn_selector"
             android:text="确定设置"/>
 
     </LinearLayout>
