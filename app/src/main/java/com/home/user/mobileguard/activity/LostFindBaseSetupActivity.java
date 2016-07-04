@@ -22,54 +22,18 @@ public abstract class LostFindBaseSetupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initData();
+
         initView();
 
-        //为毛不灵。。。。。。。。。。
-        //不用它检测滑动！！！
-        //初始化手势对象
-        /*gd = new GestureDetector(this, new GestureDetector.OnGestureListener() {
-            @Override
-            public boolean onDown(MotionEvent e) {
-                return false;
-            }
+        //不用手势检测滑动！！！
 
-            @Override
-            public void onShowPress(MotionEvent e) {
-
-            }
-
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                return false;
-            }
-
-            @Override
-            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                return false;
-            }
-
-            @Override
-            public void onLongPress(MotionEvent e) {
-
-            }
-
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                if (velocityX>0.1) {  //如果横向滑动速度大于0则进入下一步
-                    float space = e1.getX() - e2.getX();
-                    float abs = Math.abs(space);
-                    if (abs>0.2) {  //如果滑动距离大于100则进入操作
-                        if (space > 0) {
-                            next(null);
-                        } else {
-                            previous(null);
-                        }
-                    }
-                }
-                return true;
-            }
-        });*/
+        initEvent();
     }
+
+    protected abstract void initEvent() ;
+
+    protected abstract void initData();
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

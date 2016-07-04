@@ -15,7 +15,6 @@ public class SPTools {
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putString(key,value);
         edit.commit();
-        Toast.makeText(context,"保存完成",Toast.LENGTH_SHORT).show();
     }
     public static String getValue(Context context, String key, String defaultValue) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(MyContants.SPNAMEKEY, Context.MODE_PRIVATE);

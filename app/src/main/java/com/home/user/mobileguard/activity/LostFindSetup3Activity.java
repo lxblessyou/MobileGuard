@@ -7,6 +7,15 @@ import com.home.user.mobileguard.R;
  */
 public class LostFindSetup3Activity extends LostFindBaseSetupActivity{
     @Override
+    protected void initEvent() {
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+    @Override
     protected void initView() {
         setContentView(R.layout.layout_lost_find_setup3);
     }

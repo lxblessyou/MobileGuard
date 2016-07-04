@@ -11,11 +11,13 @@
         android:layout_height="wrap_content"
         android:text="通过绑定sim卡：\n下次重启手机，如果sim卡不一致，就会给安全号码发短信！！！"/>
     <RelativeLayout
+        android:id="@+id/rl_setup2_bind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_selector"
         >
         <ImageView
+            android:id="@+id/iv_setup2_bind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -24,10 +26,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="previous"
             android:layout_centerInParent="true"
             android:textSize="22sp"
-            android:text="点击绑定手机"/>
+            android:text="点击绑定/解绑手机"/>
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"

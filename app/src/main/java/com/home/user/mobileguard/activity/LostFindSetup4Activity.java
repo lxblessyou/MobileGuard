@@ -9,6 +9,15 @@ import com.home.user.mobileguard.Utils.SPTools;
  */
 public class LostFindSetup4Activity extends LostFindBaseSetupActivity{
     @Override
+    protected void initEvent() {
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+    @Override
     protected void initView() {
         setContentView(R.layout.layout_lost_find_setup4);
     }

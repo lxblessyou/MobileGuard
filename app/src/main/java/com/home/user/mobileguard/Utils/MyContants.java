@@ -7,4 +7,5 @@ public interface MyContants {
     String SPNAMEKEY = "config";
     String PDKEY = "password";
     String ISSETUPKEY = "isSetup";
+    String SIMNUM = "simNum";
 }
