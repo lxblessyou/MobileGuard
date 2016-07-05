@@ -8,4 +8,6 @@ public interface MyContants {
     String PDKEY = "password";
     String ISSETUPKEY = "isSetup";
     String SIMNUM = "simNum";
+    String SAFENUM = "safeNum";
+    String TAG = "tag";
 }

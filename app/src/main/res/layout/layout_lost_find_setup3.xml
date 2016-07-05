@@ -14,6 +14,7 @@
         android:id="@+id/et_safe_num"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="phone"
         android:hint="请输入安全号码："/>
     <Button
         android:id="@+id/btn_select_safe_num"

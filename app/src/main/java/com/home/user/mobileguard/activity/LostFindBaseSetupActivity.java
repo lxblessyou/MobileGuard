@@ -22,11 +22,11 @@ public abstract class LostFindBaseSetupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        initData();
-
         initView();
 
         //不用手势检测滑动！！！
+
+        initData();
 
         initEvent();
     }
