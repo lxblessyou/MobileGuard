@@ -35,7 +35,6 @@ public class LostFindSetup3Activity extends LostFindBaseSetupActivity {
     @Override
     protected void initData() {
         safeNum = SPTools.getValue(this, MyContants.SAFENUM, null);
-        et_safe_num.setText(safeNum);
     }
 
     @Override
@@ -44,6 +43,7 @@ public class LostFindSetup3Activity extends LostFindBaseSetupActivity {
 
         et_safe_num = (EditText) findViewById(R.id.et_safe_num);
         btn_select_safe_num = (Button) findViewById(R.id.btn_select_safe_num);
+        et_safe_num.setText(safeNum);
     }
 
     @Override

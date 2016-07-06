@@ -10,4 +10,5 @@ public interface MyContants {
     String SIMNUM = "simNum";
     String SAFENUM = "safeNum";
     String TAG = "tag";
+    String ISPROTECTED = "isProtected";
 }

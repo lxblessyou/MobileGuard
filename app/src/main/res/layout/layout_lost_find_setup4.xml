@@ -7,6 +7,7 @@
         style="@style/style_tile"
         android:text="4.恭喜您设置完成"/>
     <CheckBox
+        android:id="@+id/cb_setup4_is_protected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"

@@ -16,6 +16,7 @@ import com.home.user.mobileguard.Utils.SPTools;
  * Created by user on 16-7-3.
  */
 public class LostFindSetup2Activity extends LostFindBaseSetupActivity{
+    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 10;
     private RelativeLayout rl_setup2_bind;
     private ImageView iv_setup2_bind;
 
@@ -47,12 +48,6 @@ public class LostFindSetup2Activity extends LostFindBaseSetupActivity{
 
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         phoneSimNum = tm.getSimSerialNumber();
-
-        if (TextUtils.isEmpty(spSimNum)) {
-            iv_setup2_bind.setBackgroundResource(R.drawable.unlock);
-        } else {
-            iv_setup2_bind.setBackgroundResource(R.drawable.lock);
-        }
     }
 
     @Override
@@ -70,6 +65,12 @@ public class LostFindSetup2Activity extends LostFindBaseSetupActivity{
 
         rl_setup2_bind = (RelativeLayout) findViewById(R.id.rl_setup2_bind);
         iv_setup2_bind = (ImageView) findViewById(R.id.iv_setup2_bind);
+
+        if (TextUtils.isEmpty(spSimNum)) {
+            iv_setup2_bind.setBackgroundResource(R.drawable.unlock);
+        } else {
+            iv_setup2_bind.setBackgroundResource(R.drawable.lock);
+        }
     }
 
     @Override

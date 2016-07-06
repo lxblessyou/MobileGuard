@@ -6,8 +6,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
 
     <application
         android:allowBackup="true"
@@ -29,6 +30,8 @@
         <activity android:name=".activity.LostFindSetup3Activity" />
         <activity android:name=".activity.ContactsSelectActivity" />
         <activity android:name=".activity.LostFindSetup4Activity" />
+        <service android:name=".service.LostFindService" />
+        <receiver android:name=".service.LostFindService$SMSBroadcastReceiver" />
     </application>
 
 </manifest>
