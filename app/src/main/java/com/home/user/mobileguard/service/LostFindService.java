@@ -5,14 +5,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PermissionInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
-import android.widget.Toast;
 
 /**
  * Created by user on 16-7-6.
@@ -30,6 +27,7 @@ public class LostFindService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.i("tag", "onDestroy");
 
         if (smsBroadcastReceiver != null) {
             unregisterReceiver(smsBroadcastReceiver);
@@ -38,6 +36,7 @@ public class LostFindService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i("tag", "onStartCommand");
         smsBroadcastReceiver = new SMSBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.provider.Telephony.SMS_RECEIVED");
@@ -49,13 +48,16 @@ public class LostFindService extends Service {
     public class SMSBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.i("tag", "onReceive");
             Bundle extras = intent.getExtras();
-            SmsMessage[] pdus = (SmsMessage[]) extras.get("pdus");
+            Object[] pdus = (Object[]) extras.get("pdus");
 
-            for (SmsMessage smsMessage : pdus) {
+            for (Object pdu : pdus) {
+                SmsMessage smsMessage = SmsMessage.createFromPdu((byte[]) pdu);
+
                 String messageBody = smsMessage.getMessageBody();
                 String originatingAddress = smsMessage.getOriginatingAddress();
-                Toast.makeText(getApplicationContext(),messageBody + originatingAddress,Toast.LENGTH_SHORT).show();
+                Log.i("tag", messageBody + "-----" + originatingAddress);
             }
         }
     }

@@ -22,6 +22,7 @@ public class LostFindSetup4Activity extends LostFindBaseSetupActivity {
         cb_setup4_is_protected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isProtected = String.valueOf(isChecked);
                 Intent intent = new Intent(LostFindSetup4Activity.this,LostFindService.class);
                 if (isProtected.equals("true")) {
                     startService(intent);

@@ -1,6 +1,10 @@
 package com.home.user.mobileguard.activity;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,19 +19,22 @@ import com.home.user.mobileguard.Utils.SPTools;
 /**
  * Created by user on 16-7-3.
  */
-public class LostFindSetup2Activity extends LostFindBaseSetupActivity{
-    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 10;
+public class LostFindSetup2Activity extends LostFindBaseSetupActivity {
     private RelativeLayout rl_setup2_bind;
     private ImageView iv_setup2_bind;
 
     private String spSimNum;
     private String phoneSimNum;
+
+    /**
+     * 初始化事件
+     */
     @Override
     protected void initEvent() {
         rl_setup2_bind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(spSimNum)) {
+                if (TextUtils.isEmpty(spSimNum)) {  //如果未绑定安全号码则绑定(写入sp)
                     SPTools.putValue(LostFindSetup2Activity.this, MyContants.SIMNUM, phoneSimNum);
 
                     iv_setup2_bind.setBackgroundResource(R.drawable.lock);
@@ -44,16 +51,18 @@ public class LostFindSetup2Activity extends LostFindBaseSetupActivity{
 
     @Override
     protected void initData() {
-        spSimNum = SPTools.getValue(this, MyContants.SIMNUM,null);
+
+        spSimNum = SPTools.getValue(this, MyContants.SIMNUM, null);
 
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+
         phoneSimNum = tm.getSimSerialNumber();
     }
 
     @Override
     public void next(View view) {
         if (TextUtils.isEmpty(spSimNum)) {
-            Toast.makeText(this,"请绑定SIM卡！",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "请绑定SIM卡！", Toast.LENGTH_LONG).show();
             return;
         }
         super.next(view);
