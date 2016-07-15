@@ -72,6 +72,18 @@ public class HomeActivity extends Activity implements View.OnClickListener {
                     new String[]{Manifest.permission.RECEIVE_SMS},
                     1);
         }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.SEND_SMS},
+                    1);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_BOOT_COMPLETED)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECEIVE_BOOT_COMPLETED},
+                    1);
+        }
 //        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BROADCAST_SMS)
 //                != PackageManager.PERMISSION_GRANTED) {
 //            ActivityCompat.requestPermissions(this,

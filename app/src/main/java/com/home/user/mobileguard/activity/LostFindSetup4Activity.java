@@ -36,7 +36,7 @@ public class LostFindSetup4Activity extends LostFindBaseSetupActivity {
 
     @Override
     protected void initData() {
-        isProtected = SPTools.getValue(LostFindSetup4Activity.this,MyContants.ISPROTECTED, "false");
+        isProtected = SPTools.getValue(LostFindSetup4Activity.this,MyContants.ISPROTECTED, null);
     }
 
     @Override
@@ -44,7 +44,9 @@ public class LostFindSetup4Activity extends LostFindBaseSetupActivity {
         setContentView(R.layout.layout_lost_find_setup4);
 
         cb_setup4_is_protected = (CheckBox) findViewById(R.id.cb_setup4_is_protected);
-        cb_setup4_is_protected.setChecked(isProtected.equals("true"));
+        if (isProtected!=null) {
+            cb_setup4_is_protected.setChecked(isProtected.equals("true"));
+        }
     }
 
     @Override

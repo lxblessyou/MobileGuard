@@ -66,12 +66,12 @@ public class SplashActivity extends Activity {
     private static final String TAG = "tag";
     private static final int EXCEPTION = 0X0;
     private static final int UPDATEDIALOG = 0x1;
-    private static final int REQUEST_CODE = 0 ;
+    private static final int REQUEST_CODE = 0;
 
     //封装的服务器json对象
     private ServerJson serverJson;
     private Thread sleepThread;
-    private Thread checkThread ;
+    private Thread checkThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +107,7 @@ public class SplashActivity extends Activity {
                     showUpdateDialog();
                     break;
                 case EXCEPTION:
-                    Toast.makeText(SplashActivity.this,String.valueOf(exceptionCode),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SplashActivity.this, String.valueOf(exceptionCode), Toast.LENGTH_SHORT).show();
                     showHomeActivity();
                     break;
             }
@@ -191,7 +191,7 @@ public class SplashActivity extends Activity {
 
                     @Override
                     public void onFailure(HttpException e, String s) {
-                        Log.i(TAG, "onFailure: e--"+e+"--s--"+s);
+                        Log.i(TAG, "onFailure: e--" + e + "--s--" + s);
                         Toast.makeText(SplashActivity.this, "更新失败！", Toast.LENGTH_SHORT).show();
                         showHomeActivity();
                     }
@@ -202,30 +202,31 @@ public class SplashActivity extends Activity {
      * 跳转到首页
      */
     private void showHomeActivity() {
-        if (this.isFinishing()){
+        if (this.isFinishing()) {
             return;
-        }
-        final Intent intent = new Intent(this, HomeActivity.class);
-
-        endTime = System.currentTimeMillis();
-        Log.i(TAG, "endTime:"+endTime+ "---startTimet:"+startTime);
-        if (3000 > (endTime - startTime)) {
-            sleepThread = new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(3000 - (endTime - startTime));
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    startActivity(intent);
-                    finish();
-                }
-            };
-            sleepThread.start();
         } else {
-            startActivity(intent);
-            finish();
+            final Intent intent = new Intent(this, HomeActivity.class);
+
+            endTime = System.currentTimeMillis();
+            Log.i(TAG, "endTime:" + endTime + "---startTimet:" + startTime);
+            if (500 > (endTime - startTime)) {
+                sleepThread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(3000 - (endTime - startTime));
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        startActivity(intent);
+                        finish();
+                    }
+                };
+                sleepThread.start();
+            } else {
+                startActivity(intent);
+                finish();
+            }
         }
     }
 
@@ -234,7 +235,7 @@ public class SplashActivity extends Activity {
      */
     private void obtainNewVersion() {
         startTime = System.currentTimeMillis();
-        checkThread =   new Thread() {
+        checkThread = new Thread() {
             private StringBuilder sb;   //服务器端json字符串
 
             @Override
@@ -243,7 +244,7 @@ public class SplashActivity extends Activity {
                     //获取服务器端json数据
                     getServerJson(sb);
 //                    Log.i("tag", String.valueOf(sb));
-                    if (exceptionCode == 4004){
+                    if (exceptionCode == 4004) {
                         exceptionHandle(exceptionCode);
                         return;
                     }
@@ -252,7 +253,7 @@ public class SplashActivity extends Activity {
                     serverJson = parsJson(sb);
 //                    Log.i("tag", String.valueOf(serverJson));
 
-                    tv_splash_version.setText("版本名：V"+serverJson.getVersion_name());
+                    tv_splash_version.setText("版本名：V" + serverJson.getVersion_name());
 
                     //版本比对，看是否有更新
 //                    Log.i(TAG, "run: 当前版本号-"+versionCode+",服务器版本号-"+serverJson.getVersion_code());
@@ -317,12 +318,11 @@ public class SplashActivity extends Activity {
                 httpUrlConnection.setReadTimeout(5000); //读取超时时长
 
                 int responseCode = httpUrlConnection.getResponseCode(); //服务器返回的响应码
-                if(responseCode == 404){    //资源没找到
+                if (responseCode == 404) {    //资源没找到
                     exceptionCode = 4004;
-                }
-                else if (responseCode % 2 == 0) { //连接成功
+                } else if (responseCode % 2 == 0) { //连接成功
                     InputStream inputStream = httpUrlConnection.getInputStream();
-                    br =  new BufferedReader(new InputStreamReader(inputStream));
+                    br = new BufferedReader(new InputStreamReader(inputStream));
                     String line = br.readLine();
                     this.sb = new StringBuilder();
                     while (!TextUtils.isEmpty(line)) {
@@ -330,10 +330,10 @@ public class SplashActivity extends Activity {
                         line = br.readLine();
                     }
                 }
-                if (br!=null){
+                if (br != null) {
                     br.close();
                 }
-                if (httpUrlConnection!=null){
+                if (httpUrlConnection != null) {
                     httpUrlConnection.disconnect();
                 }
             }
@@ -368,7 +368,7 @@ public class SplashActivity extends Activity {
         //动画集
         AnimationSet as = new AnimationSet(true);
         as.setFillAfter(true);  //动画播完后的状态
-        as.setDuration(3000);   //设置动画持续时长
+        as.setDuration(500);   //设置动画持续时长
 
         //透明度动画/渐变动画
         AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
@@ -398,9 +398,10 @@ public class SplashActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (sleepThread!=null){
+        if (sleepThread != null) {
             sleepThread.interrupt();
-        }if (checkThread!=null){
+        }
+        if (checkThread != null) {
             checkThread.interrupt();
         }
     }
