@@ -7,6 +7,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -57,6 +58,7 @@ public class LostFindSetup2Activity extends LostFindBaseSetupActivity {
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 
         phoneSimNum = tm.getSimSerialNumber();
+//        Log.i(MyContants.TAG, "initData: phoneSimNum" + phoneSimNum);
     }
 
     @Override

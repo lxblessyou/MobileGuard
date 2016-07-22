@@ -31,6 +31,7 @@ public class BootReceiver extends BroadcastReceiver {
 
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(safeNum, null, "tou dao la !!!", null, null);
+                Log.i(MyContants.TAG, "发送报警短信!");
             }
         }
     }

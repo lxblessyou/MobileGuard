@@ -56,9 +56,14 @@ public class LostFindService extends Service {
                 SmsMessage smsMessage = SmsMessage.createFromPdu((byte[]) pdu);
 
                 String messageBody = smsMessage.getMessageBody();
-                String originatingAddress = smsMessage.getOriginatingAddress();
-                Log.i("tag", messageBody + "-----" + originatingAddress);
+//                String originatingAddress = smsMessage.getOriginatingAddress();
+//                Log.i("tag", messageBody + "-----" + originatingAddress);
+                if ("#*gps*#".equals(messageBody)) {
+                    intent.setClass(context,LocationService.class);
+                    startService(intent);
+                }
             }
+            abortBroadcast();
         }
     }
 
