@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MobileGuard</string>
+    <string name="sample_device_admin_description">a</string>
+    <string name="sample_device_admin">b</string>
 </resources>

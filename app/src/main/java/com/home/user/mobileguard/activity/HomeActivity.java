@@ -21,6 +21,7 @@ import com.home.user.mobileguard.Utils.HomeAdapter;
 import com.home.user.mobileguard.Utils.MD5Util;
 import com.home.user.mobileguard.Utils.MyContants;
 import com.home.user.mobileguard.Utils.SPTools;
+import com.home.user.mobileguard.service.LostFindService;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -91,9 +92,22 @@ public class HomeActivity extends Activity implements View.OnClickListener {
 //                    1);
 //        }
 
+        initData();
+
         initView(); //初始化View
 
         initEvent();  //初始化事件
+    }
+
+    /**
+     * 初始化数据
+     */
+    private void initData() {
+        String isProtected = SPTools.getValue(this, MyContants.ISPROTECTED, null);
+        Intent intent = new Intent(this,LostFindService.class);
+        if (isProtected.equals("true")) {
+            startService(intent);
+        }
     }
 
     /**

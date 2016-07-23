@@ -1,7 +1,9 @@
 package com.home.user.mobileguard.service;
 
 import android.app.Service;
+import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,12 +13,17 @@ import android.support.annotation.Nullable;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
+import com.home.user.mobileguard.Utils.MyContants;
+import com.home.user.mobileguard.receiver.DeviceAdminSampleReceiver;
+
 /**
  * Created by user on 16-7-6.
  */
 public class LostFindService extends Service {
 
     private SMSBroadcastReceiver smsBroadcastReceiver;
+    private ComponentName who;
+    private DevicePolicyManager dpm;
 
     @Nullable
     @Override
@@ -37,6 +44,10 @@ public class LostFindService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("tag", "onStartCommand");
+
+        dpm = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
+        who = new ComponentName(this, DeviceAdminSampleReceiver.class);
+
         smsBroadcastReceiver = new SMSBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.provider.Telephony.SMS_RECEIVED");
@@ -61,9 +72,45 @@ public class LostFindService extends Service {
                 if ("#*gps*#".equals(messageBody)) {
                     intent.setClass(context,LocationService.class);
                     startService(intent);
+                } else if ("#*lockscreen*#".equals(messageBody)) {
+                    //锁屏
+                    lockScreen();
                 }
             }
             abortBroadcast();
+        }
+
+        /**
+         * 锁屏
+         */
+        private void lockScreen() {
+            Log.i(MyContants.TAG, "lockScreen: ");
+            if (dpm.isAdminActive(who)) {
+//                dpm.resetPassword("8888",Intent.FLAG_ACTIVITY_NEW_TASK);
+                dpm.lockNow();
+                Log.i(MyContants.TAG, "lockScreen:lockNow ");
+            }
+            else {
+//            <activity android:name="DeviceAdminAdd"
+//            android:label="@string/device_admin_add_title"
+//            android:theme="@style/TallTitleBarTheme"
+//            android:clearTaskOnLaunch="true"
+//                    >
+//            <intent-filter>
+//            <action android:name="android.app.action.ADD_DEVICE_ADMIN" />
+//            <category android:name="android.intent.category.DEFAULT" />
+//            </intent-filter>
+//            </activity>
+//                Intent intent = new Intent();
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                intent.setAction(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+//                intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, who);
+//                intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,"添加到设备管理");
+//                startActivity(intent);
+                Log.i(MyContants.TAG, "lockScreen:startActivity ");
+
+            }
+
         }
     }
 
