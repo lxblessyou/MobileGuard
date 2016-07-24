@@ -105,7 +105,7 @@ public class HomeActivity extends Activity implements View.OnClickListener {
     private void initData() {
         String isProtected = SPTools.getValue(this, MyContants.ISPROTECTED, null);
         Intent intent = new Intent(this,LostFindService.class);
-        if (isProtected.equals("true")) {
+        if ("true".equals(isProtected)) {
             startService(intent);
         }
     }

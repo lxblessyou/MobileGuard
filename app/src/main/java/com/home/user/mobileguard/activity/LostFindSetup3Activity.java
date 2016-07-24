@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.home.user.mobileguard.R;
+import com.home.user.mobileguard.Utils.EncryptionTools;
 import com.home.user.mobileguard.Utils.MyContants;
 import com.home.user.mobileguard.Utils.SPTools;
 
@@ -34,7 +35,7 @@ public class LostFindSetup3Activity extends LostFindBaseSetupActivity {
 
     @Override
     protected void initData() {
-        safeNum = SPTools.getValue(this, MyContants.SAFENUM, null);
+        safeNum = EncryptionTools.deciphering(MyContants.OFFSET,SPTools.getValue(this, MyContants.SAFENUM, ""));
     }
 
     @Override
@@ -68,7 +69,7 @@ public class LostFindSetup3Activity extends LostFindBaseSetupActivity {
             Toast.makeText(this, "安全号码不能为空！", Toast.LENGTH_SHORT).show();
             return;
         }
-        SPTools.putValue(this, MyContants.SAFENUM, safeNum);
+        SPTools.putValue(this, MyContants.SAFENUM, EncryptionTools.encryption(MyContants.OFFSET,safeNum));
         super.next(view);
     }
 

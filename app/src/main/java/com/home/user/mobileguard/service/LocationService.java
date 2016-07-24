@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
 
+import com.home.user.mobileguard.Utils.EncryptionTools;
 import com.home.user.mobileguard.Utils.MyContants;
 import com.home.user.mobileguard.Utils.SPTools;
 
@@ -63,7 +64,7 @@ public class LocationService extends Service {
                 Log.i(MyContants.TAG, "onLocationChanged: " + body);
 
                 SmsManager smsManager = SmsManager.getDefault();
-                String safeNum = SPTools.getValue(getApplicationContext(), MyContants.SAFENUM, null);
+                String safeNum = EncryptionTools.deciphering(MyContants.OFFSET,SPTools.getValue(getApplicationContext(), MyContants.SAFENUM, null));
                 smsManager.sendTextMessage(safeNum, null, body.toString(), null, null);
 
                 stopSelf();

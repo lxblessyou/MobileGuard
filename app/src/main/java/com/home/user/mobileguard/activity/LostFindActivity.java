@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.home.user.mobileguard.R;
+import com.home.user.mobileguard.Utils.EncryptionTools;
 import com.home.user.mobileguard.Utils.MyContants;
 import com.home.user.mobileguard.Utils.SPTools;
 
@@ -28,7 +29,7 @@ public class LostFindActivity extends LostFindBaseSetupActivity {
     @Override
     protected void initData() {
         isProtected = SPTools.getValue(this, MyContants.ISPROTECTED, null);
-        safeNum = SPTools.getValue(this, MyContants.SAFENUM, null);
+        safeNum = EncryptionTools.deciphering(MyContants.OFFSET,SPTools.getValue(this, MyContants.SAFENUM, ""));
     }
 
     @Override

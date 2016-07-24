@@ -11,4 +11,5 @@ public interface MyContants {
     String SAFENUM = "safeNum";
     String TAG = "tag";
     String ISPROTECTED = "isProtected";
+    int OFFSET = 8;
 }
