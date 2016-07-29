@@ -5,7 +5,7 @@ import com.home.user.mobileguard.R;
 /**
  * Created by user on 16-7-2.
  */
-public class LostFindSetup1Activity extends LostFindBaseSetupActivity {
+public class LostFindSetup1Activity extends LostFindBaseActivity {
 
     @Override
     protected void initEvent() {

@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -92,6 +93,13 @@ public class HomeActivity extends Activity implements View.OnClickListener {
 //                    1);
 //        }
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         initData();
 
         initView(); //初始化View
@@ -107,6 +115,10 @@ public class HomeActivity extends Activity implements View.OnClickListener {
         Intent intent = new Intent(this,LostFindService.class);
         if ("true".equals(isProtected)) {
             startService(intent);
+        }
+        String rename = SPTools.getValue(getApplicationContext(), MyContants.RENAME, "");
+        if (!TextUtils.isEmpty(rename)) {
+            names[0] = rename;
         }
     }
 

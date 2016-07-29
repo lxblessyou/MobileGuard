@@ -12,7 +12,7 @@ import com.home.user.mobileguard.service.LostFindService;
 /**
  * Created by user on 16-7-3.
  */
-public class LostFindSetup4Activity extends LostFindBaseSetupActivity {
+public class LostFindSetup4Activity extends LostFindBaseActivity {
     private CheckBox cb_setup4_is_protected;
     private String isProtected = "false";
 

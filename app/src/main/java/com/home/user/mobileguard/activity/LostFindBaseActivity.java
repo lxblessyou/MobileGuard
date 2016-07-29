@@ -3,14 +3,16 @@ package com.home.user.mobileguard.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.home.user.mobileguard.R;
 
-public abstract class LostFindBaseSetupActivity extends AppCompatActivity {
+public abstract class LostFindBaseActivity extends AppCompatActivity {
 
+    private static final String TAG = "tag";
     private GestureDetector gd;
     private float startX;
     private float startY;
@@ -20,7 +22,7 @@ public abstract class LostFindBaseSetupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.i(TAG, "onCreate: ");
         initData();
 
         initView();
@@ -30,7 +32,7 @@ public abstract class LostFindBaseSetupActivity extends AppCompatActivity {
         initEvent();
     }
 
-    protected abstract void initEvent() ;
+    protected abstract void initEvent();
 
     protected abstract void initData();
 
@@ -52,7 +54,7 @@ public abstract class LostFindBaseSetupActivity extends AppCompatActivity {
             case MotionEvent.ACTION_UP:
                 float space = startX - endX;
                 float abs = Math.abs(space);
-                if (abs>150) {  //如果滑动距离大于100则进入操作
+                if (abs > 150) {  //如果滑动距离大于100则进入操作
                     if (space > 0) {
                         next(null);
                     } else {
@@ -119,4 +121,34 @@ public abstract class LostFindBaseSetupActivity extends AppCompatActivity {
      * 上一步点击事件
      */
     protected abstract void previousActivity();
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart: ");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "onResume: ");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(TAG, "onPause: ");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(TAG, "onStop: ");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy: ");
+    }
 }

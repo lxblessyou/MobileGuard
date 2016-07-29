@@ -1,71 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:id="@+id/ll_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <TextView
         style="@style/style_tile"
-        android:text="手机防盗界面"/>
+        android:text="手机防盗界面" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="26dp"
         android:layout_margin="10dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:text="防盗保护是否开启："/>
+            android:text="防盗保护是否开启："
+            android:textSize="22sp" />
+
         <ImageView
             android:id="@+id/iv_lost_find_lock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@drawable/lock"/>
+            android:src="@drawable/lock" />
     </RelativeLayout>
+
     <TextView
         android:id="@+id/tv_lost_find_safe_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:textSize="22sp"
-        android:text="安全号码为:"/>
+        android:text="安全号码为:"
+        android:textSize="22sp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:drawableLeft="@android:drawable/star_on"
-        android:text="Sim卡变更报警"/>
+        android:gravity="center_vertical"
+        android:text="Sim卡变更报警" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:drawableLeft="@android:drawable/star_on"
-        android:text="GPS追踪命令：#*gps*#"/>
+        android:gravity="center_vertical"
+        android:text="GPS追踪命令：#*gps*#" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:drawableLeft="@android:drawable/star_on"
-        android:text="远程清除数据命令：#*wipedata*#"/>
+        android:gravity="center_vertical"
+        android:text="远程清除数据命令：#*wipedata*#" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:drawableLeft="@android:drawable/star_on"
-        android:text="远程锁屏命令：#*lockscreen*#"/>
+        android:gravity="center_vertical"
+        android:text="远程锁屏命令：#*lockscreen*#" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:drawableLeft="@android:drawable/star_on"
-        android:text="播放报警音乐命令：#*music*#"/>
+        android:gravity="center_vertical"
+        android:text="播放报警音乐命令：#*music*#" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:padding="5dp"
-        android:onClick="reset"
         android:background="@drawable/btn_selector"
-        android:textSize="20sp"
-        android:text="重新进入设置向导界面"/>
+        android:onClick="reset"
+        android:padding="5dp"
+        android:text="重新进入设置向导界面"
+        android:textSize="20sp" />
 
 </LinearLayout>

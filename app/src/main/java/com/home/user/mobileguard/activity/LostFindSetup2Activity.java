@@ -1,13 +1,8 @@
 package com.home.user.mobileguard.activity;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -20,7 +15,7 @@ import com.home.user.mobileguard.Utils.SPTools;
 /**
  * Created by user on 16-7-3.
  */
-public class LostFindSetup2Activity extends LostFindBaseSetupActivity {
+public class LostFindSetup2Activity extends LostFindBaseActivity {
     private RelativeLayout rl_setup2_bind;
     private ImageView iv_setup2_bind;
 

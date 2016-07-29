@@ -12,4 +12,5 @@ public interface MyContants {
     String TAG = "tag";
     String ISPROTECTED = "isProtected";
     int OFFSET = 8;
+    String RENAME = "rename";
 }

@@ -15,7 +15,7 @@ import com.home.user.mobileguard.Utils.SPTools;
 /**
  * Created by user on 16-7-3.
  */
-public class LostFindSetup3Activity extends LostFindBaseSetupActivity {
+public class LostFindSetup3Activity extends LostFindBaseActivity {
 
     private Button btn_select_safe_num;
     private EditText et_safe_num;
