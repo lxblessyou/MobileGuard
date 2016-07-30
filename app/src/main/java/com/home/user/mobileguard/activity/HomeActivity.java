@@ -9,7 +9,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -139,9 +138,20 @@ public class HomeActivity extends Activity implements View.OnClickListener {
                             showConfirmPwDialog();
                         }
                         break;
+                    case 8:
+                        showSettingCenter();
+                        break;
                 }
             }
         });
+    }
+
+    /**
+     * 显示设置中心
+     */
+    private void showSettingCenter() {
+        Intent intent = new Intent(this,SettingCenterActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -223,7 +233,7 @@ public class HomeActivity extends Activity implements View.OnClickListener {
                     Toast.makeText(this, "登陆成功", Toast.LENGTH_LONG).show();
                     ad_input_pw.dismiss();
                     //判断是直接进入LostFindActivity还是先进入引导步骤
-                    intoLostFind();
+                    showLostFind();
                 } else {
                     Toast.makeText(this,"密码错误,请重输!!!",Toast.LENGTH_LONG).show();
                     et_dialog_input_confirm.setText("");
@@ -239,7 +249,7 @@ public class HomeActivity extends Activity implements View.OnClickListener {
     /**
      * 判断是直接进入LostFindActivity还是先进入引导步骤
      */
-    private void intoLostFind() {
+    private void showLostFind() {
         String isSetup = SPTools.getValue(this, MyContants.ISSETUPKEY, null);
         Intent intent = new Intent();
         if (isSetup!=null) {

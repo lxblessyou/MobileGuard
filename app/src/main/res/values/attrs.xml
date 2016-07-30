@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="title" format="string"/>
+    <attr name="content" format="string"/>
+</resources>

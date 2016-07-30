@@ -35,6 +35,7 @@
         <activity android:name=".activity.LostFindSetup3Activity" />
         <activity android:name=".activity.ContactsSelectActivity" />
         <activity android:name=".activity.LostFindSetup4Activity" />
+        <activity android:name=".activity.SettingCenterActivity" />
 
         <service android:name=".service.LostFindService" />
         <service android:name=".service.LocationService" />

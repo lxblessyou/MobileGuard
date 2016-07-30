@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -113,17 +114,22 @@ public class LostFindActivity extends LostFindBaseActivity {
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mPopupWindow.setFocusable(true);
         Display defaultDisplay = getWindowManager().getDefaultDisplay();
+        mView.startAnimation(sa);
         int windowHeight = defaultDisplay.getHeight();
         int windowWidth = defaultDisplay.getWidth();
         int viewWidth = mView.getWidth();
         int viewHeight = mView.getHeight();
-        mView.startAnimation(sa);
-        mPopupWindow.showAtLocation(ll_root, Gravity.NO_GRAVITY, windowWidth / 2 - viewWidth / 2, windowHeight / 2 - viewHeight / 2);
+        Log.i(MyContants.TAG, "  windowWidth: " + windowWidth + "  windowHeight: " + windowHeight + "  viewWidth: " + viewWidth + "  viewHeight: " + viewHeight);
+
+        mPopupWindow.showAtLocation(ll_root, Gravity.NO_GRAVITY, windowWidth / 2, windowHeight / 2);
     }
 
+    /**
+     * 初始化Popup
+     */
     private void initPopup() {
-        mView = getLayoutInflater().inflate(R.layout.layout_lost_find_popup,null);
-        sa = new ScaleAnimation(1f,1f,0f,1f, ScaleAnimation.RELATIVE_TO_SELF,0,ScaleAnimation.RELATIVE_TO_SELF,0);
+        mView = getLayoutInflater().inflate(R.layout.layout_lost_find_popup, null);
+        sa = new ScaleAnimation(1f, 1f, 0f, 1f, ScaleAnimation.RELATIVE_TO_SELF, 0, ScaleAnimation.RELATIVE_TO_SELF, 0);
         sa.setDuration(1000);
 
         btn_popup_cancel = (Button) mView.findViewById(R.id.btn_popup_cancel);
